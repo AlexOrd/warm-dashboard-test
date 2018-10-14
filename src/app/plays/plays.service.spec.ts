@@ -12,4 +12,10 @@ describe('PlaysService', () => {
   it('should be created', inject([PlaysService], (service: PlaysService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('should contain required methods', inject([PlaysService], (service: PlaysService) => {
+    expect(service.getAllCountinents).toBeDefined();
+    expect(service.getAllArtists).toBeDefined();
+  }));
+
 });

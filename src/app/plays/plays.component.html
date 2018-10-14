@@ -13,18 +13,19 @@
       <div class="collapse" id="all-filters">
         <div class="row" id="primary-table-filters">
           <div class="col-md-3">
-            <div class="warm dropdown">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle warm-text-2" data-toggle="dropdown" id="dropdown-filter-by-artist" type="button">
-                All artists
+            <div class="warm dropdown btn-group" dropdown>
+              <button id="dropdown-filter-by-artist" dropdownToggle type="button" class="btn btn-default dropdown-toggle warm-text-2"
+                aria-controls="dropdown-basic" aria-expanded="false">
+                  {{artist.name || 'All Artists'}}
                 <span class="caret"></span>
               </button>
-              <ul aria-labelledby="dropdown-filter-by-artist" class="dropdown-menu warm-text-2">
-                <li>
-                  <a>
-                    All artists
-                  </a>
-                </li>
-                <!--template bindings={}-->
+              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu warm-text-2" role="menu" aria-labelledby="button-basic">
+                <li role="menuitem" (click)="setValue('artist',defaultArtist)"> None </li>
+                <li
+                  *ngFor="let artist of allArtists"
+                  role="menuitem"
+                  (click)="setValue('artist', artist)"
+                > {{ artist.name }} </li>
               </ul>
             </div>
           </div>
@@ -66,6 +67,7 @@
             </div>
           </div>
         </div>
+
         <div class="row" id="secondary-table-filters">
           <div class="col-md-3">
             <div class="warm dropdown">
