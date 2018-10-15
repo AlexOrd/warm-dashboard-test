@@ -15,9 +15,9 @@ export class PlaysResolve implements Resolve<any> {
   ) {}
 
   resolve() {
-    const countinentsRequst = this.playsService.getAllCountinents();
-    const artistsRequst = this.playsService.getAllArtists();
+    const continentsRequest = this.playsService.getAllContinents();
+    const artistsRequest = this.playsService.getAllArtists();
 
-    return forkJoin([countinentsRequst, artistsRequst]);
+    return forkJoin([continentsRequest, artistsRequest]);
   }
 }

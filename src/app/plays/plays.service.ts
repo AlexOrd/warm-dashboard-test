@@ -13,8 +13,8 @@ export class PlaysService {
 
   constructor(private http: Http) { }
 
-  getAllCountinents(): Observable<any> {
-    return this.http.get(`${this.baseUrl}countinents`)
+  getAllContinents(): Observable<any> {
+    return this.http.get(`${this.baseUrl}continents`)
     // Temp: for in-memory-data
     .pipe(map(res => res.json()));
   }
@@ -25,38 +25,36 @@ export class PlaysService {
     .pipe(map(res => res.json()));
   }
 
-  getSongs(artist_id?: number): Observable<any> {
+  getSongs(artist_id): Observable<any> {
     const params = { artist_id };
     return this.http.get(`${this.baseUrl}songs`, { params })
     // Temp: for in-memory-data
     .pipe(map(res => res.json()));
   }
 
-  getCountries(countinent_id?: number): Observable<any> {
-    const params = { countinent_id };
+  getCountries(continent_id): Observable<any> {
+    const params = { continent_id };
     return this.http.get(`${this.baseUrl}countries`, { params })
     // Temp: for in-memory-data
     .pipe(map(res => res.json()));
   }
 
-  getCities(countinent_id?: number, country_id?: number): Observable<any> {
-    const params = { countinent_id, country_id };
+  getCities(continent_id, country_id): Observable<any> {
+    const params = { continent_id, country_id };
     return this.http.get(`${this.baseUrl}cities`, { params })
     // Temp: for in-memory-data
     .pipe(map(res => res.json()));
   }
 
-  getChannels(countinent_id?: number, country_id?: number, city_id?: number): Observable<any> {
-    const params = { countinent_id, country_id, city_id };
+  getChannels(continent_id, country_id, city_id): Observable<any> {
+    const params = { continent_id, country_id, city_id };
     return this.http.get(`${this.baseUrl}channels`, { params })
     // Temp: for in-memory-data
     .pipe(map(res => res.json()));
   }
 
-  getBroadcasts(
-    artist_id?: number, song_id?: number, countinent_id?: number, country_id?: number, city_id?: number, date?: string
-  ): Observable<any> {
-    const params = { artist_id, song_id, countinent_id, country_id, city_id, date };
+  getBroadcasts(artist_id, song_id, continent_id, country_id, city_id, date): Observable<any> {
+    const params = { artist_id, song_id, continent_id, country_id, city_id, date };
     return this.http.get(`${this.baseUrl}broadcasts`, { params })
     // Temp: for in-memory-data
     .pipe(map(res => res.json()));
