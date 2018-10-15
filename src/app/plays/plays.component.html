@@ -13,135 +13,200 @@
       <div class="collapse" id="all-filters">
         <div class="row" id="primary-table-filters">
           <div class="col-md-3">
-            <div class="warm dropdown btn-group" dropdown>
-              <button id="dropdown-filter-by-artist" dropdownToggle type="button" class="btn btn-default dropdown-toggle warm-text-2"
-                aria-controls="dropdown-basic" aria-expanded="false">
-                  {{artist.name || 'All Artists'}}
+            <div class="warm dropdown" dropdown>
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle warm-text-2"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.artists.selected.name || 'All Artists'}}
                 <span class="caret"></span>
               </button>
-              <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu warm-text-2" role="menu" aria-labelledby="button-basic">
-                <li role="menuitem" (click)="setValue('artist',defaultArtist)"> None </li>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu warm-text-2"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('artists')"> None </li>
                 <li
-                  *ngFor="let artist of allArtists"
+                  *ngFor="let artist of queryState.artists.all"
                   role="menuitem"
-                  (click)="setValue('artist', artist)"
+                  (click)="setValue('artists', artist)"
                 > {{ artist.name }} </li>
               </ul>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="warm dropdown">
-              <!--template bindings={}-->
-              <!--template bindings={}--><button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle warm-text-2" data-toggle="dropdown" id="dropdown-filter-by-song" type="button">
-                All songs
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.artists.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle warm-text-2"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.songs.selected.name || 'All Songs'}}
                 <span class="caret"></span>
               </button>
-              <ul aria-labelledby="dropdown-filter-by-song" class="dropdown-menu warm-text-2">
-                <li>
-                  <a>
-                    All songs
-                  </a>
-                </li>
-                <!--template bindings={}-->
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu warm-text-2"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('songs')"> None </li>
+                <li
+                  *ngFor="let song of queryState.songs.all"
+                  role="menuitem"
+                  (click)="setValue('songs', song)"
+                > {{ song.name }} </li>
               </ul>
             </div>
           </div>
           <div class="col-md-3">
+            <!-- Temporary changes. Waiting for global project datepicker configuration. -->
+            <input
+              class="form-control warm-text-2"
+              style="opacity: 0; position: absolute;"
+              #drp="bsDaterangepicker"
+              bsDaterangepicker
+              [(ngModel)]="queryState.dateRange"
+              (ngModelChange)="getPlays()">
             <div class="warm dropdown warm-dropdown-date">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle warm-text-2" data-toggle="dropdown" id="dropdown-filter-by-from-date" type="button">
-                <span class="warm-emphasize">From:</span> 2018-10-17
+              <button class="btn btn-default dropdown-toggle warm-text-2" type="button" (click)="drp.toggle()">
+                <span class="warm-emphasize">From:</span> {{queryState.dateRange[0] | date:'yyyy-MM-dd'}}
               </button>
-              <div aria-labelledby="dropdown-filter-by-from-date" class="dropdown-menu warm-text-3">
-                <div><div class="bootstrap-datetimepicker-widget usetwentyfour"><ul class="list-unstyled"><li><div class="datepicker"><div class="datepicker-days" style="display: block;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Month"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Month">October 2018</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Month"></span></th></tr><tr><th class="dow">Su</th><th class="dow">Mo</th><th class="dow">Tu</th><th class="dow">We</th><th class="dow">Th</th><th class="dow">Fr</th><th class="dow">Sa</th></tr></thead><tbody><tr><td data-action="selectDay" data-day="09/30/2018" class="day old weekend">30</td><td data-action="selectDay" data-day="10/01/2018" class="day">1</td><td data-action="selectDay" data-day="10/02/2018" class="day">2</td><td data-action="selectDay" data-day="10/03/2018" class="day">3</td><td data-action="selectDay" data-day="10/04/2018" class="day">4</td><td data-action="selectDay" data-day="10/05/2018" class="day">5</td><td data-action="selectDay" data-day="10/06/2018" class="day weekend">6</td></tr><tr><td data-action="selectDay" data-day="10/07/2018" class="day weekend">7</td><td data-action="selectDay" data-day="10/08/2018" class="day">8</td><td data-action="selectDay" data-day="10/09/2018" class="day">9</td><td data-action="selectDay" data-day="10/10/2018" class="day">10</td><td data-action="selectDay" data-day="10/11/2018" class="day">11</td><td data-action="selectDay" data-day="10/12/2018" class="day">12</td><td data-action="selectDay" data-day="10/13/2018" class="day today weekend">13</td></tr><tr><td data-action="selectDay" data-day="10/14/2018" class="day weekend">14</td><td data-action="selectDay" data-day="10/15/2018" class="day">15</td><td data-action="selectDay" data-day="10/16/2018" class="day">16</td><td data-action="selectDay" data-day="10/17/2018" class="day active">17</td><td data-action="selectDay" data-day="10/18/2018" class="day">18</td><td data-action="selectDay" data-day="10/19/2018" class="day">19</td><td data-action="selectDay" data-day="10/20/2018" class="day weekend">20</td></tr><tr><td data-action="selectDay" data-day="10/21/2018" class="day weekend">21</td><td data-action="selectDay" data-day="10/22/2018" class="day">22</td><td data-action="selectDay" data-day="10/23/2018" class="day">23</td><td data-action="selectDay" data-day="10/24/2018" class="day">24</td><td data-action="selectDay" data-day="10/25/2018" class="day">25</td><td data-action="selectDay" data-day="10/26/2018" class="day">26</td><td data-action="selectDay" data-day="10/27/2018" class="day weekend">27</td></tr><tr><td data-action="selectDay" data-day="10/28/2018" class="day weekend">28</td><td data-action="selectDay" data-day="10/29/2018" class="day">29</td><td data-action="selectDay" data-day="10/30/2018" class="day">30</td><td data-action="selectDay" data-day="10/31/2018" class="day">31</td><td data-action="selectDay" data-day="11/01/2018" class="day new">1</td><td data-action="selectDay" data-day="11/02/2018" class="day new">2</td><td data-action="selectDay" data-day="11/03/2018" class="day new weekend">3</td></tr><tr><td data-action="selectDay" data-day="11/04/2018" class="day new weekend">4</td><td data-action="selectDay" data-day="11/05/2018" class="day new">5</td><td data-action="selectDay" data-day="11/06/2018" class="day new">6</td><td data-action="selectDay" data-day="11/07/2018" class="day new">7</td><td data-action="selectDay" data-day="11/08/2018" class="day new">8</td><td data-action="selectDay" data-day="11/09/2018" class="day new">9</td><td data-action="selectDay" data-day="11/10/2018" class="day new weekend">10</td></tr></tbody></table></div><div class="datepicker-months" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Year"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Year">2018</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Year"></span></th></tr></thead><tbody><tr><td colspan="7"><span data-action="selectMonth" class="month">Jan</span><span data-action="selectMonth" class="month">Feb</span><span data-action="selectMonth" class="month">Mar</span><span data-action="selectMonth" class="month">Apr</span><span data-action="selectMonth" class="month">May</span><span data-action="selectMonth" class="month">Jun</span><span data-action="selectMonth" class="month">Jul</span><span data-action="selectMonth" class="month">Aug</span><span data-action="selectMonth" class="month">Sep</span><span data-action="selectMonth" class="month active">Oct</span><span data-action="selectMonth" class="month">Nov</span><span data-action="selectMonth" class="month">Dec</span></td></tr></tbody></table></div><div class="datepicker-years" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Decade"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Decade">2013-2024</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Decade"></span></th></tr></thead><tbody><tr><td colspan="7"><span data-action="selectYear" class="year">2013</span><span data-action="selectYear" class="year">2014</span><span data-action="selectYear" class="year">2015</span><span data-action="selectYear" class="year">2016</span><span data-action="selectYear" class="year">2017</span><span data-action="selectYear" class="year active">2018</span><span data-action="selectYear" class="year">2019</span><span data-action="selectYear" class="year">2020</span><span data-action="selectYear" class="year">2021</span><span data-action="selectYear" class="year">2022</span><span data-action="selectYear" class="year">2023</span><span data-action="selectYear" class="year">2024</span></td></tr></tbody></table></div><div class="datepicker-decades" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Century"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5">2000-2107</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Century"></span></th></tr></thead><tbody><tr><td colspan="7"><span data-action="selectDecade" class="decade" data-selection="2005">2000 - 2011</span><span data-action="selectDecade" class="decade active" data-selection="2017">2012 - 2023</span><span data-action="selectDecade" class="decade" data-selection="2029">2024 - 2035</span><span data-action="selectDecade" class="decade" data-selection="2041">2036 - 2047</span><span data-action="selectDecade" class="decade" data-selection="2053">2048 - 2059</span><span data-action="selectDecade" class="decade" data-selection="2065">2060 - 2071</span><span data-action="selectDecade" class="decade" data-selection="2077">2072 - 2083</span><span data-action="selectDecade" class="decade" data-selection="2089">2084 - 2095</span><span data-action="selectDecade" class="decade" data-selection="2101">2096 - 2107</span><span></span><span></span><span></span></td></tr></tbody></table></div></div></li><li class="picker-switch accordion-toggle"><table class="table-condensed"><tbody><tr></tr></tbody></table></li></ul></div></div>
-              </div>
             </div>
           </div>
           <div class="col-md-3" id="toDatePicker">
             <div class="warm dropdown warm-dropdown-date">
-              <button aria-expanded="true" aria-haspopup="true" class="btn btn-default dropdown-toggle warm-text-2" data-toggle="dropdown" id="dropdown-filter-by-to-date" type="button">
-                <span class="warm-emphasize">To:</span> 2018-10-13
+              <button class="btn btn-default dropdown-toggle warm-text-2" type="button" (click)="drp.toggle()">
+                <span class="warm-emphasize">To:</span> {{queryState.dateRange[1] | date:'yyyy-MM-dd'}}
               </button>
-              <div aria-labelledby="dropdown-filter-by-to-date" class="dropdown-menu warm-text-3">
-                <div><div class="bootstrap-datetimepicker-widget usetwentyfour"><ul class="list-unstyled"><li><div class="datepicker"><div class="datepicker-days" style="display: block;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Month"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Month">October 2018</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Month"></span></th></tr><tr><th class="dow">Su</th><th class="dow">Mo</th><th class="dow">Tu</th><th class="dow">We</th><th class="dow">Th</th><th class="dow">Fr</th><th class="dow">Sa</th></tr></thead><tbody><tr><td data-action="selectDay" data-day="09/30/2018" class="day old weekend">30</td><td data-action="selectDay" data-day="10/01/2018" class="day">1</td><td data-action="selectDay" data-day="10/02/2018" class="day">2</td><td data-action="selectDay" data-day="10/03/2018" class="day">3</td><td data-action="selectDay" data-day="10/04/2018" class="day">4</td><td data-action="selectDay" data-day="10/05/2018" class="day">5</td><td data-action="selectDay" data-day="10/06/2018" class="day weekend">6</td></tr><tr><td data-action="selectDay" data-day="10/07/2018" class="day weekend">7</td><td data-action="selectDay" data-day="10/08/2018" class="day">8</td><td data-action="selectDay" data-day="10/09/2018" class="day">9</td><td data-action="selectDay" data-day="10/10/2018" class="day">10</td><td data-action="selectDay" data-day="10/11/2018" class="day">11</td><td data-action="selectDay" data-day="10/12/2018" class="day">12</td><td data-action="selectDay" data-day="10/13/2018" class="day active today weekend">13</td></tr><tr><td data-action="selectDay" data-day="10/14/2018" class="day weekend">14</td><td data-action="selectDay" data-day="10/15/2018" class="day">15</td><td data-action="selectDay" data-day="10/16/2018" class="day">16</td><td data-action="selectDay" data-day="10/17/2018" class="day">17</td><td data-action="selectDay" data-day="10/18/2018" class="day">18</td><td data-action="selectDay" data-day="10/19/2018" class="day">19</td><td data-action="selectDay" data-day="10/20/2018" class="day weekend">20</td></tr><tr><td data-action="selectDay" data-day="10/21/2018" class="day weekend">21</td><td data-action="selectDay" data-day="10/22/2018" class="day">22</td><td data-action="selectDay" data-day="10/23/2018" class="day">23</td><td data-action="selectDay" data-day="10/24/2018" class="day">24</td><td data-action="selectDay" data-day="10/25/2018" class="day">25</td><td data-action="selectDay" data-day="10/26/2018" class="day">26</td><td data-action="selectDay" data-day="10/27/2018" class="day weekend">27</td></tr><tr><td data-action="selectDay" data-day="10/28/2018" class="day weekend">28</td><td data-action="selectDay" data-day="10/29/2018" class="day">29</td><td data-action="selectDay" data-day="10/30/2018" class="day">30</td><td data-action="selectDay" data-day="10/31/2018" class="day">31</td><td data-action="selectDay" data-day="11/01/2018" class="day new">1</td><td data-action="selectDay" data-day="11/02/2018" class="day new">2</td><td data-action="selectDay" data-day="11/03/2018" class="day new weekend">3</td></tr><tr><td data-action="selectDay" data-day="11/04/2018" class="day new weekend">4</td><td data-action="selectDay" data-day="11/05/2018" class="day new">5</td><td data-action="selectDay" data-day="11/06/2018" class="day new">6</td><td data-action="selectDay" data-day="11/07/2018" class="day new">7</td><td data-action="selectDay" data-day="11/08/2018" class="day new">8</td><td data-action="selectDay" data-day="11/09/2018" class="day new">9</td><td data-action="selectDay" data-day="11/10/2018" class="day new weekend">10</td></tr></tbody></table></div><div class="datepicker-months" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Year"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Year">2018</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Year"></span></th></tr></thead><tbody><tr><td colspan="7"><span data-action="selectMonth" class="month">Jan</span><span data-action="selectMonth" class="month">Feb</span><span data-action="selectMonth" class="month">Mar</span><span data-action="selectMonth" class="month">Apr</span><span data-action="selectMonth" class="month">May</span><span data-action="selectMonth" class="month">Jun</span><span data-action="selectMonth" class="month">Jul</span><span data-action="selectMonth" class="month">Aug</span><span data-action="selectMonth" class="month">Sep</span><span data-action="selectMonth" class="month active">Oct</span><span data-action="selectMonth" class="month">Nov</span><span data-action="selectMonth" class="month">Dec</span></td></tr></tbody></table></div><div class="datepicker-years" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Decade"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5" title="Select Decade">2013-2024</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Decade"></span></th></tr></thead><tbody><tr><td colspan="7"><span data-action="selectYear" class="year">2013</span><span data-action="selectYear" class="year">2014</span><span data-action="selectYear" class="year">2015</span><span data-action="selectYear" class="year">2016</span><span data-action="selectYear" class="year">2017</span><span data-action="selectYear" class="year active">2018</span><span data-action="selectYear" class="year">2019</span><span data-action="selectYear" class="year">2020</span><span data-action="selectYear" class="year">2021</span><span data-action="selectYear" class="year">2022</span><span data-action="selectYear" class="year">2023</span><span data-action="selectYear" class="year">2024</span></td></tr></tbody></table></div><div class="datepicker-decades" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev" data-action="previous"><span class="glyphicon glyphicon-chevron-left" title="Previous Century"></span></th><th class="picker-switch" data-action="pickerSwitch" colspan="5">2000-2107</th><th class="next" data-action="next"><span class="glyphicon glyphicon-chevron-right" title="Next Century"></span></th></tr></thead><tbody><tr><td colspan="7"><span data-action="selectDecade" class="decade" data-selection="2005">2000 - 2011</span><span data-action="selectDecade" class="decade active" data-selection="2017">2012 - 2023</span><span data-action="selectDecade" class="decade" data-selection="2029">2024 - 2035</span><span data-action="selectDecade" class="decade" data-selection="2041">2036 - 2047</span><span data-action="selectDecade" class="decade" data-selection="2053">2048 - 2059</span><span data-action="selectDecade" class="decade" data-selection="2065">2060 - 2071</span><span data-action="selectDecade" class="decade" data-selection="2077">2072 - 2083</span><span data-action="selectDecade" class="decade" data-selection="2089">2084 - 2095</span><span data-action="selectDecade" class="decade" data-selection="2101">2096 - 2107</span><span></span><span></span><span></span></td></tr></tbody></table></div></div></li><li class="picker-switch accordion-toggle"><table class="table-condensed"><tbody><tr></tr></tbody></table></li></ul></div></div>
-              </div>
             </div>
           </div>
         </div>
 
         <div class="row" id="secondary-table-filters">
           <div class="col-md-3">
-            <div class="warm dropdown">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdown-filter-by-region" type="button">
-                All continents
+            <div class="warm dropdown" dropdown >
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.continents.selected.name || 'All continents'}}
                 <span class="caret"></span>
               </button>
-              <ul aria-labelledby="dropdown-filter-by-region" class="dropdown-menu">
-                <li>
-                  <a>
-                    All continents
-                  </a>
-                </li>
-                <!--template bindings={}-->
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('continents')"> None </li>
+                <li
+                  *ngFor="let continent of queryState.continents.all"
+                  role="menuitem"
+                  (click)="setValue('continents', continent)"
+                > {{ continent.name }} </li>
               </ul>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="warm dropdown">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdown-filter-by-country" type="button">
-                All countries
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.continents.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.countries.selected.name || 'All countries'}}
                 <span class="caret"></span>
               </button>
-              <ul aria-labelledby="dropdown-filter-by-country" class="dropdown-menu">
-                <li>
-                  <a>
-                    All countries
-                  </a>
-                </li>
-                <!--template bindings={}-->
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('countries')"> None </li>
+                <li
+                  *ngFor="let country of queryState.countries.all"
+                  role="menuitem"
+                  (click)="setValue('countries', country)"
+                > {{ country.name }} </li>
               </ul>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="warm dropdown">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdown-filter-by-city" type="button">
-                All cities
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.countries.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.cities.selected.name || 'All cities'}}
                 <span class="caret"></span>
               </button>
-              <ul aria-labelledby="dropdown-filter-by-city" class="dropdown-menu">
-                <li>
-                  <a>
-                    All cities
-                  </a>
-                </li>
-                <!--template bindings={}-->
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('cities')"> None </li>
+                <li
+                  *ngFor="let city of queryState.cities.all"
+                  role="menuitem"
+                  (click)="setValue('cities', city)"
+                > {{ city.name }} </li>
               </ul>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="warm dropdown">
-              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdown-filter-by-channel" type="button">
-                All channels
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.cities.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.channels.selected.name || 'All channels'}}
                 <span class="caret"></span>
               </button>
-              <ul aria-labelledby="dropdown-filter-by-channel" class="dropdown-menu">
-                <li>
-                  <a>
-                    All channels
-                  </a>
-                </li>
-                <!--template bindings={}-->
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('channels')"> None </li>
+                <li
+                  *ngFor="let channel of queryState.channels.all"
+                  role="menuitem"
+                  (click)="setValue('channels', channel)"
+                > {{ channel.name }} </li>
               </ul>
             </div>
           </div>
         </div>
-        <!--template bindings={}--><div class="row" id="additional-table-filters" style="margin-bottom: 10px;">
+        <div class="row" id="additional-table-filters" style="margin-bottom: 10px;">
           <div class="col-md-3">
             <div class="warm dropdown" title="If you would like us to count plays for your specific upload turn off “All versions”. If you would like us to find songs that are the same, but uploaded by others, turn it on. The on function is especially interesting when working with remixes. Whether it is long or short versions or when uploading a song that we have previous history on.">
-              <div class="btn">
+              <button class="btn" (click)="switchAllVersions()">
                 All versions
-                <!--template bindings={}-->
-                <!--template bindings={}--><span class="warm-emphasize">OFF</span>
-              </div>
+                <span class="warm-emphasize">{{ queryState.allVersions ? 'ON' : 'OFF'}}</span>
+              </button>
             </div>
           </div>
           <div class="col-md-3">
@@ -156,7 +221,7 @@
 
       <div class="row">
         <div class="col-md-12">
-          <p class="warm-de-emphasize">0 plays in the current selection.</p>
+          <p class="warm-de-emphasize">{{ plays.length }} plays in the current selection.</p>
         </div>
       </div>
       <div class="row">
@@ -165,29 +230,55 @@
             <thead>
               <tr>
                 <th>
-                  Date and time
+                  artist
                 </th>
                 <th>
-                  Duration
+                  song
                 </th>
                 <th>
-                  Title
+                  number of plays
                 </th>
                 <th>
-                  Channel
+                  duration
                 </th>
                 <th>
-                  City
+                  rate
                 </th>
                 <th>
-                  Country
+                  earnings
+                </th>
+                <th>
+                  in total
                 </th>
               </tr>
             </thead>
             <tbody>
-              <!--template bindings={}-->
+              <tr *ngFor="let play of plays; let i = index" (click)="uncheckFromTotal(i)">
+                <th>
+                  {{ play.artist_name }}
+                </th>
+                <th>
+                  {{ play.song_name }}
+                </th>
+                <th>
+                  {{ play.plays_number }}
+                </th>
+                <th>
+                  {{ play.duration_minutes }}
+                </th>
+                <th>
+                  {{ play.price_per_minute }}
+                </th>
+                <th>
+                  {{ play.duration_minutes * play.price_per_minute }}
+                </th>
+                <th>
+                  <p class="warm-emphasize">{{ play.selected ? 'yes' : 'no'}}</p>
+                </th>
+              </tr>
             </tbody>
           </table>
+          <p class="warm-emphasize">Total: {{ totalPrice | currency}}</p>
         </div>
       </div>
     </div>
