@@ -1,0 +1,287 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-4  radiostation-filters">
+        <button aria-controls="collapseExample" aria-expanded="false" class="btn btn-primary show-hide-filters" data-target="#all-filters" data-toggle="collapse" type="button">
+          <span aria-hidden="true" class="glyphicon glyphicon-triangle-top"></span>
+          <span aria-hidden="true" class="glyphicon glyphicon-triangle-bottom"></span> Show filters
+          <span aria-hidden="true" class="glyphicon glyphicon-triangle-bottom"></span>
+          <span aria-hidden="true" class="glyphicon glyphicon-triangle-top"></span>
+        </button>
+      </div>
+      <div class="collapse" id="all-filters">
+        <div class="row" id="primary-table-filters">
+          <div class="col-md-3">
+            <div class="warm dropdown" dropdown>
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle warm-text-2"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.artists.selected.name || 'All Artists'}}
+                <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu warm-text-2"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('artists')"> None </li>
+                <li
+                  *ngFor="let artist of queryState.artists.all"
+                  role="menuitem"
+                  (click)="setValue('artists', artist)"
+                > {{ artist.name }} </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.artists.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle warm-text-2"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.songs.selected.name || 'All Songs'}}
+                <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu warm-text-2"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('songs')"> None </li>
+                <li
+                  *ngFor="let song of queryState.songs.all"
+                  role="menuitem"
+                  (click)="setValue('songs', song)"
+                > {{ song.name }} </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <!-- Temporary changes. Waiting for global project datepicker configuration. -->
+            <input
+              class="form-control warm-text-2"
+              style="opacity: 0; position: absolute;"
+              #drp="bsDaterangepicker"
+              bsDaterangepicker
+              [(ngModel)]="queryState.dateRange"
+              (ngModelChange)="getPlays()">
+            <div class="warm dropdown warm-dropdown-date">
+              <button class="btn btn-default dropdown-toggle warm-text-2" type="button" (click)="drp.toggle()">
+                <span class="warm-emphasize">From:</span> {{queryState.dateRange[0] | date:'yyyy-MM-dd'}}
+              </button>
+            </div>
+          </div>
+          <div class="col-md-3" id="toDatePicker">
+            <div class="warm dropdown warm-dropdown-date">
+              <button class="btn btn-default dropdown-toggle warm-text-2" type="button" (click)="drp.toggle()">
+                <span class="warm-emphasize">To:</span> {{queryState.dateRange[1] | date:'yyyy-MM-dd'}}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" id="secondary-table-filters">
+          <div class="col-md-3">
+            <div class="warm dropdown" dropdown >
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.continents.selected.name || 'All continents'}}
+                <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('continents')"> None </li>
+                <li
+                  *ngFor="let continent of queryState.continents.all"
+                  role="menuitem"
+                  (click)="setValue('continents', continent)"
+                > {{ continent.name }} </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.continents.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.countries.selected.name || 'All countries'}}
+                <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('countries')"> None </li>
+                <li
+                  *ngFor="let country of queryState.countries.all"
+                  role="menuitem"
+                  (click)="setValue('countries', country)"
+                > {{ country.name }} </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.countries.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.cities.selected.name || 'All cities'}}
+                <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('cities')"> None </li>
+                <li
+                  *ngFor="let city of queryState.cities.all"
+                  role="menuitem"
+                  (click)="setValue('cities', city)"
+                > {{ city.name }} </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="warm dropdown" dropdown [isDisabled]="!queryState.cities.selected.id">
+              <button
+                id="dropdown-filter-by-artist"
+                dropdownToggle
+                type="button"
+                class="btn btn-default dropdown-toggle"
+                aria-controls="dropdown-basic"
+                aria-expanded="false">
+                  {{queryState.channels.selected.name || 'All channels'}}
+                <span class="caret"></span>
+              </button>
+              <ul
+                id="dropdown-basic"
+                *dropdownMenu
+                class="dropdown-menu"
+                role="menu"
+                aria-labelledby="button-basic">
+                <li role="menuitem" (click)="eraseValue('channels')"> None </li>
+                <li
+                  *ngFor="let channel of queryState.channels.all"
+                  role="menuitem"
+                  (click)="setValue('channels', channel)"
+                > {{ channel.name }} </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="additional-table-filters" style="margin-bottom: 10px;">
+          <div class="col-md-3">
+            <div class="warm dropdown" title="If you would like us to count plays for your specific upload turn off “All versions”. If you would like us to find songs that are the same, but uploaded by others, turn it on. The on function is especially interesting when working with remixes. Whether it is long or short versions or when uploading a song that we have previous history on.">
+              <button class="btn" (click)="switchAllVersions()">
+                All versions
+                <span class="warm-emphasize">{{ queryState.allVersions ? 'ON' : 'OFF'}}</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="warm dropdown" title="Send an e-mail to js@warmmusic.net with rate information that we currently don’t provide.">
+              <div class="btn">
+                <a class="warm-emphasize" href="mailto:js@warmmusic.net"> Send an e-mail with the rate </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <p class="warm-de-emphasize">{{ plays.length }} plays in the current selection.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 small-hard-table">
+          <table class="warm table table-striped ">
+            <thead>
+              <tr>
+                <th>
+                  artist
+                </th>
+                <th>
+                  song
+                </th>
+                <th>
+                  number of plays
+                </th>
+                <th>
+                  duration
+                </th>
+                <th>
+                  rate
+                </th>
+                <th>
+                  earnings
+                </th>
+                <th>
+                  in total
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let play of plays; let i = index" (click)="uncheckFromTotal(i)">
+                <th>
+                  {{ play.artist_name }}
+                </th>
+                <th>
+                  {{ play.song_name }}
+                </th>
+                <th>
+                  {{ play.plays_number }}
+                </th>
+                <th>
+                  {{ play.duration_minutes }}
+                </th>
+                <th>
+                  {{ play.price_per_minute }}
+                </th>
+                <th>
+                  {{ play.duration_minutes * play.price_per_minute }}
+                </th>
+                <th>
+                  <p class="warm-emphasize">{{ play.selected ? 'yes' : 'no'}}</p>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+          <p class="warm-emphasize">Total: {{ totalPrice | currency}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
